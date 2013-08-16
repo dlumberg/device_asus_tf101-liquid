@@ -37,6 +37,7 @@ PRODUCT_COPY_FILES += \
 # hardware
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml \
+    frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
@@ -61,8 +62,9 @@ PRODUCT_COPY_FILES += \
 
 # ramdisk
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/ramdisk/fstab.ventana:root/fstab.ventana \
+    $(LOCAL_PATH)/fstab.ventana:root/fstab.ventana \
     $(LOCAL_PATH)/ramdisk/init.ventana.rc:root/init.ventana.rc \
+    $(LOCAL_PATH)/ramdisk/init.ventana.keyboard.rc:root/init.ventana.keyboard.rc \
     $(LOCAL_PATH)/ramdisk/ueventd.ventana.rc:root/ueventd.ventana.rc \
     $(LOCAL_PATH)/ramdisk/init.ventana.usb.rc:root/init.ventana.usb.rc
 
@@ -90,7 +92,6 @@ PRODUCT_COPY_FILES += \
 # prebuilt
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/sbin/keyswap::root/sbin/keyswap \
-    $(LOCAL_PATH)/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
     $(LOCAL_PATH)/prebuilt/bin/wifimacwriter:system/bin/wifimacwriter \
     $(LOCAL_PATH)/prebuilt/etc/gps/gpsconfig.xml:system/etc/gps/gpsconfig.xml \
     $(LOCAL_PATH)/prebuilt/data/srs_processing.cfg:system/data/srs_processing.cfg
@@ -118,7 +119,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/lib/modules/ff-memless.ko:system/lib/modules/ff-memless.ko \
     $(LOCAL_PATH)/prebuilt/lib/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
     $(LOCAL_PATH)/prebuilt/lib/modules/tun.ko:system/lib/modules/tun.ko \
-    $(LOCAL_PATH)/prebuilt/lib/modules/xpad.ko:system/lib/modules/xpad.ko
+    $(LOCAL_PATH)/prebuilt/lib/modules/xpad.ko:system/lib/modules/xpad.ko \
+    $(LOCAL_PATH)/prebuilt/lib/modules/texfat.ko:system/lib/modules/texfat.ko
+
+# init.d
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/etc/init.d/05modules:system/etc/init.d/05modules
 
 # tablet
 PRODUCT_CHARACTERISTICS := tablet
@@ -148,8 +154,8 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
     ro.carrier=wifi-only \
     ro.sf.lcd_density=160 \
-    ro.opengles.version=131072 \
     dalvik.vm.dexopt-data-only=1 \
-	persist.sys.usb.config=mtp,adb \
-    wifi.supplicant_scan_interval=180
+    persist.sys.usb.config=mtp,adb \
+    wifi.supplicant_scan_interval=180 \
+    ro.opengles.version=196608
 

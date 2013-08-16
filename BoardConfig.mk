@@ -37,17 +37,21 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a
-TARGET_ARCH_VARIANT_CPU := cortex-a9
+TARGET_CPU_VARIANT := generic
 TARGET_ARCH_VARIANT_FPU := vfpv3-d16
 TARGET_CPU_SMP := true
+ARCH_ARM_HIGH_OPTIMIZATION := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
-ARCH_ARM_HAVE_ARMV7A := true
 
-# scorpion
-BOARD_MALLOC_ALIGNMENT := 16
-USE_ALL_OPTIMIZED_STRING_FUNCS := true
+# Avoid the generation of ldrcc instructions
 NEED_WORKAROUND_CORTEX_A9_745320 := true
+
+BOARD_MALLOC_ALIGNMENT := 16
 TARGET_EXTRA_CFLAGS := $(call cc-option,-mtune=cortex-a9) $(call cc-option,-mcpu=cortex-a9)
+
+#define to use all of the Linaro Cortex-A9 optimized string funcs,
+#instead of subset known to work on all machines
+USE_ALL_OPTIMIZED_STRING_FUNCS := true
 
 # wireless
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
@@ -74,6 +78,10 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/asus/tf101/bluetooth
 
+# kernel - disable inline building for now  
+TARGET_KERNEL_SOURCE := kernel/asus/tf101
+TARGET_KERNEL_CONFIG := katkernel_lidpatch_defconfig
+
 # camera
 USE_CAMERA_STUB := false
 
@@ -81,11 +89,19 @@ USE_CAMERA_STUB := false
 BOARD_USE_SKIA_LCDTEXT := true
 BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 
-# kernel - disable inline building for now  
-TARGET_KERNEL_SOURCE := kernel/asus/tf101
-TARGET_KERNEL_CONFIG := katkernel_lidpatch_defconfig
+# SELinux policies
+BOARD_SEPOLICY_DIRS := \
+    device/asus/tf101/selinux
+
+BOARD_SEPOLICY_UNION := \
+    file_contexts \
+    file.te \
+    device.te \
+    domain.te
 
 # recovery
+RECOVERY_FSTAB_VERSION := 2
+TARGET_RECOVERY_FSTAB = device/asus/tf101/fstab.ventana
 BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_LARGE_FILESYSTEM := true
